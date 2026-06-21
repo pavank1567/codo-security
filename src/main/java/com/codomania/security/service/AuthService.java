@@ -22,6 +22,9 @@ public class AuthService {
     UserRepository userRepository;
 
     @Autowired
+    JWTService jwtService;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
@@ -39,7 +42,9 @@ public class AuthService {
 
         userRepository.save(user);
 
-        return AuthResponse.builder().build();
+        String jwtToken = jwtService.generateToken(user);
+
+        return AuthResponse.builder().accessToken(jwtToken).build();
 
     }
 
@@ -47,7 +52,10 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(), request.getPassword()));
-        return AuthResponse.builder().build();
+
+        User user = userRepository.findByEmail(request.getEmail());
+        String jwtToken = jwtService.generateToken(user);
+        return AuthResponse.builder().accessToken(jwtToken).build();
     }
 
 }

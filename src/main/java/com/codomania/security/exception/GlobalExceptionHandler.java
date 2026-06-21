@@ -15,4 +15,18 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
+
+    @ExceptionHandler(RentalLimitExceededException.class)
+    public ResponseEntity<String> handleRentalLimitExceededException(RentalLimitExceededException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NotAvailableForRentException.class)
+    public ResponseEntity<String> handleNotAvailableForRentException(NotAvailableForRentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
 }

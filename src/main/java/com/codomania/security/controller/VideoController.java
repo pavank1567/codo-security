@@ -1,6 +1,7 @@
 package com.codomania.security.controller;
 
 import com.codomania.security.model.Video;
+import com.codomania.security.service.RentalService;
 import com.codomania.security.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,5 +46,27 @@ public class VideoController {
     public ResponseEntity<Void> deleteVideo(@PathVariable Long id) {
         videoService.deleteVideo(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/rent")
+    public ResponseEntity<Void> rentVideo(
+            @RequestParam Long userId,
+            @RequestParam Long videoId) {
+
+        System.out.println("IN CONTROLLER");
+        videoService.rentVideo(userId, videoId);
+        System.out.println();
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/return")
+    public ResponseEntity<Void> returnVideo(
+            @RequestParam Long userId,
+            @RequestParam Long videoId) {
+
+        videoService.returnVideo(userId, videoId);
+
+        return ResponseEntity.ok().build();
     }
 }
